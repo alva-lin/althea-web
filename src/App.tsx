@@ -1,10 +1,8 @@
-function App() {
+import Router from "./routes";
 
-  return (
-    <>
-        <h1>Althea</h1>
-    </>
-  )
-}
 
-export default App
+const App = () => (
+  <Router />
+);
+
+export default App;
