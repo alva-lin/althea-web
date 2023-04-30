@@ -1,6 +1,8 @@
-import { Fragment } from "react";
 import { Category, Component, Palette, Variant, } from "@react-buddy/ide-toolbox";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import MUIPalette from "@react-buddy/palette-mui";
+import { Fragment } from "react";
 
 export const PaletteTree = () => (
   <Palette >

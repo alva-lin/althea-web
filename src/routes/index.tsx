@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./Home";
+import Home from "./Home.tsx";
 import ErrorPage from "./special/ErrorPage.tsx";
-import NotFound from "./special/NotFound.tsx";
 import Loading from "./special/Loading.tsx";
+import NotFound from "./special/NotFound.tsx";
 
 const Router = () => {
   return (

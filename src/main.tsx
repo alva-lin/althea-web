@@ -1,15 +1,15 @@
+import { LogtoConfig, LogtoProvider } from "@logto/react";
+import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
+import * as locales from "@mui/material/locale";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import axios from "axios";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
-import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./store";
-import "./styles/main.css";
-import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
-import { LogtoConfig, LogtoProvider } from "@logto/react";
-import { DevSupport } from "@react-buddy/ide-toolbox";
-import { ComponentPreviews, useInitial } from "./dev";
+import App from "./App.tsx";
 import AppEnv from "./common/env.ts";
+import { store } from "./store";
+import "./styles/index.css";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
@@ -27,30 +27,40 @@ const theme = createTheme({
       },
     },
   },
-});
+}, locales.zhCN);
 
 const logtoConfig: LogtoConfig = {
   endpoint: AppEnv.Logto.Endpoint,
   appId: AppEnv.Logto.AppId,
+  resources: AppEnv.Logto.Resources,
 };
+
+axios.defaults.baseURL = AppEnv.Server.BaseUrl + AppEnv.Server.ApiPath;
+axios.interceptors.response.use((response) => {
+  return response.data;
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 root.render(
   <React.StrictMode >
     <Provider store={ store } >
-      <LogtoProvider config={ logtoConfig } >
-        <StyledEngineProvider injectFirst >
-          <ThemeProvider theme={ theme } >
-            <BrowserRouter >
-              <CssBaseline />
-              <DevSupport ComponentPreviews={ ComponentPreviews }
-                          useInitialHook={ useInitial }
-              >
-                <App />
-              </DevSupport >
-            </BrowserRouter >
-          </ThemeProvider >
-        </StyledEngineProvider >
-      </LogtoProvider >
+      <QueryClientProvider client={ queryClient } >
+        <LogtoProvider config={ logtoConfig } >
+          <StyledEngineProvider injectFirst >
+            <ThemeProvider theme={ theme } >
+              <CssBaseline enableColorScheme />
+              <App />
+            </ThemeProvider >
+          </StyledEngineProvider >
+        </LogtoProvider >
+      </QueryClientProvider >
     </Provider >
   </React.StrictMode >
 );

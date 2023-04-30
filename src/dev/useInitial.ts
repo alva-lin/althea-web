@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { InitialHookStatus } from "@react-buddy/ide-toolbox";
+import { useEffect, useState } from "react";
+import useLogin from "../hooks/useLogin.tsx";
 
 export const useInitial: () => InitialHookStatus = () => {
   const [ status, setStatus ] = useState<InitialHookStatus>({
@@ -12,5 +13,13 @@ export const useInitial: () => InitialHookStatus = () => {
    If you caught some errors, set error status to true.
    Initial hook is considered to be successfully completed if it will return {loading: false, error: false}.
    */
+  const { login } = useLogin();
+  useEffect(() => {
+    setStatus({ loading: true, error: false });
+    login().then(() => {
+      setStatus({ loading: false, error: false });
+    });
+  }, [ login ]);
+  
   return status;
 };
