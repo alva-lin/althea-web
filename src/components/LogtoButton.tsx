@@ -1,17 +1,18 @@
 import { useLogto } from "@logto/react";
 import { Button } from "@mui/material";
 import { useCallback } from "react";
+import AppEnv from "../common/env.ts";
 
 const LogtoButton = () => {
   const { signIn, signOut, isAuthenticated } = useLogto();
   
   const login = useCallback(() => {
-    const redirectUrl = import.meta.env.VITE_LOGTO_LOGIN_REDIRECT_URL || "";
+    const redirectUrl = AppEnv.Logto.LoginRedirectUrl;
     signIn(redirectUrl).then();
   }, [ signIn ]);
   
   const logout = useCallback(() => {
-    const redirectUrl = import.meta.env.VITE_LOGTO_LOGOUT_REDIRECT_URL || "";
+    const redirectUrl = AppEnv.Logto.LogoutRedirectUrl;
     signOut(redirectUrl).then();
   }, [ signOut ]);
   

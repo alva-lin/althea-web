@@ -9,6 +9,7 @@ import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from "@
 import { LogtoConfig, LogtoProvider } from "@logto/react";
 import { DevSupport } from "@react-buddy/ide-toolbox";
 import { ComponentPreviews, useInitial } from "./dev";
+import AppEnv from "./common/env.ts";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
@@ -29,8 +30,8 @@ const theme = createTheme({
 });
 
 const logtoConfig: LogtoConfig = {
-  endpoint: import.meta.env.VITE_LOGTO_ENDPOINT,
-  appId: import.meta.env.VITE_LOGTO_APPID,
+  endpoint: AppEnv.Logto.Endpoint,
+  appId: AppEnv.Logto.AppId,
 };
 
 root.render(
