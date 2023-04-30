@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { decrement, increment, selectCount } from "../../store/slice/Counter.Slice.tsx";
 import { connect } from "react-redux";
 import { RootState } from "../../store";
-import { useLogto } from '@logto/react';
+import LogtoButton from "../../components/LogtoButton.tsx";
 
 interface HomeProps {
   count: number,
@@ -11,7 +11,6 @@ interface HomeProps {
 }
 
 const Home = ({ count, increment, decrement }: HomeProps) => {
-  const { signIn, signOut, isAuthenticated } = useLogto();
   
   return (
     <div>
@@ -23,22 +22,7 @@ const Home = ({ count, increment, decrement }: HomeProps) => {
         <Button variant="outlined" onClick={ () => { decrement();} }>Decrement</Button>
       </div>
       <div>
-        { isAuthenticated
-          ? <>
-            <Button onClick={ () => {
-              signOut(import.meta.env.VITE_LOGTO_LOGOUT_REDIRECT_URL || '').then();
-            } }>
-              注销
-            </Button>
-          </>
-          : <>
-            <Button onClick={ () => {
-              signIn(import.meta.env.VITE_LOGTO_LOGIN_REDIRECT_URL || '').then();
-            } }>
-              登录
-            </Button>
-          </>
-        }
+        <LogtoButton />
       </div>
     </div>
   );
