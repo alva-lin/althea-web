@@ -6,11 +6,11 @@ import Loading from "./special/Loading.tsx";
 
 const Router = () => {
   return (
-    <Routes>
+    <Routes >
       <Route path="/" element={ <Home /> } errorElement={ <ErrorPage /> } />
       <Route path="/loading" element={ <Loading /> } />
       <Route path="*" element={ <NotFound /> } />
-    </Routes>
+    </Routes >
   );
 };
 
