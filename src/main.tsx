@@ -7,6 +7,8 @@ import { store } from "./store";
 import "./styles/main.css";
 import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { LogtoConfig, LogtoProvider } from "@logto/react";
+import { DevSupport } from "@react-buddy/ide-toolbox";
+import { ComponentPreviews, useInitial } from "./dev";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
@@ -39,7 +41,11 @@ root.render(
           <ThemeProvider theme={ theme } >
             <BrowserRouter >
               <CssBaseline />
-              <App />
+              <DevSupport ComponentPreviews={ ComponentPreviews }
+                          useInitialHook={ useInitial }
+              >
+                <App />
+              </DevSupport >
             </BrowserRouter >
           </ThemeProvider >
         </StyledEngineProvider >
