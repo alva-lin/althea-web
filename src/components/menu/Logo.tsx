@@ -1,8 +1,8 @@
 import Badge from "@mui/material/Badge";
-import useServerDelay from "../hooks/useServerDelay.tsx";
 
 const Logo = () => {
-  const delay = useServerDelay();
+  // const delay = useServerDelay();
+  const delay: number | null = 100;
   let color: "default" | "success" | "warning" | "error" | "primary" | "secondary" | "info";
   if (delay === null) {
     color = "default";
@@ -15,8 +15,7 @@ const Logo = () => {
   }
   
   return (
-    <div
-      className={ "flex w-48 h-16 rounded-lg justify-center cursor-pointer bg-gray-200 hover:bg-gray-300" } >
+    <div className={ "w-full h-16 flex rounded-lg justify-center" } >
       <div className={ "m-auto text-left text-3xl font-bold text-black select-none" } >
         <Badge variant="dot" color={ color } >
           Althea

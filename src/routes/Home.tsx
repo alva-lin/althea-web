@@ -1,48 +1,26 @@
-import { Button } from "@mui/material";
-import { connect } from "react-redux";
-import Logo from "../components/Logo.tsx";
-import LogtoButton from "../components/LogtoButton.tsx";
-import { RootState } from "../store";
-import { decrement, increment, selectCount } from "../store/slice/Counter.Slice.tsx";
+import { Outlet } from "react-router-dom";
+import Footer from "../components/Footer.tsx";
+import Menu from "../components/menu/Menu.tsx";
 
-interface HomeProps {
-  count: number,
-  increment: () => void,
-  decrement: () => void,
-}
-
-const HomeComponent = ({ count, increment, decrement }: HomeProps) => {
+const HomeComponent = () => {
   
   return (
-    <div >
-      <h1 className={ "underline text-red-500 text-4xl" } >Althea</h1 >
-      <Button variant="outlined" color={ "error" } className={ "text-black" } >Hello World</Button >
-      <div >
-        <h2 className={ "text-2xl text-teal-600" } >Counter: { count }</h2 >
-        <Button variant="outlined" onClick={ () => { increment();} } >Increment</Button >
-        <Button variant="outlined" onClick={ () => { decrement();} } >Decrement</Button >
+    <div className={ "flex w-screen h-screen" } >
+      <div className={ "w-72 " } >
+        <Menu />
       </div >
-      <div >
-        <LogtoButton />
-      </div >
-      <div >
-        <Logo />
+      <div className="flex-1 flex flex-col" >
+        <div className={ "flex-1 relative" } >
+          <Outlet />
+        </div >
+        <div className="h-6 my-1" >
+          <Footer />
+        </div >
       </div >
     </div >
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    count: selectCount(state),
-  };
-};
-
-const mapDispatchToProps = {
-  increment: increment,
-  decrement: decrement,
-};
-
-const Home = connect(mapStateToProps, mapDispatchToProps)(HomeComponent);
+const Home = (HomeComponent);
 
 export default Home;

@@ -1,13 +1,13 @@
 import { ComponentPreview, Previews } from "@react-buddy/ide-toolbox";
-import Logo from "../components/Logo.tsx";
-import LogtoButton from "../components/LogtoButton.tsx";
+import Logo from "../components/menu/Logo.tsx";
+import LogtoMenuItem from "../components/menu/LogtoMenuItem.tsx";
 import { PaletteTree } from "./palette";
 
 const ComponentPreviews = () => {
   return (
     <Previews palette={ <PaletteTree /> } >
       <ComponentPreview path="/LogtoButton" >
-        <LogtoButton />
+        <LogtoMenuItem />
       </ComponentPreview >
       <ComponentPreview path="/Logo" >
         <Logo />

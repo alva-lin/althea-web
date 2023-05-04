@@ -44,6 +44,10 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      select: (response) => {
+        const { data } = response as { data: unknown };
+        return data;
+      },
     },
   },
 });
