@@ -13,7 +13,7 @@ const Menu = () => {
       <div >
         <AddChatMenuItem />
       </div >
-      <div className={ "flex-1" } >
+      <div className={ "flex-1 overflow-y-auto" } >
         <ChatList />
       </div >
       <div className={ "flex flex-col gap-2" } >

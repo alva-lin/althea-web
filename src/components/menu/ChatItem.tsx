@@ -10,8 +10,9 @@ const ChatItem = ({ chatInfo }: ChatItemProps) => {
     <div className={ "flex-none flex flex-col justify-center" } >
       <ChatBubbleOutlineOutlined sx={ { "fontSize": 20 } } />
     </div >
-    <div >
+    <div className="chat-name">
       { chatInfo.name }
+      <div></div>
     </div >
   </div >);
 };
