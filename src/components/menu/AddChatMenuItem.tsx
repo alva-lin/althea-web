@@ -1,20 +1,14 @@
 import { AddOutlined } from "@mui/icons-material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { CreateChat } from "../../services/chat/api.ts";
+import { useNavigate } from "react-router-dom";
 import MenuItem from "./MenuItem.tsx";
 
 const AddChatMenuItem = () => {
-  const queryClient = useQueryClient();
-  const mutation = useMutation([ "chats", "addChat" ], CreateChat, {
-    onSuccess: () => {
-      queryClient.invalidateQueries([ "chats" ]).then();
-    }
-  });
   
+  const navigate = useNavigate();
   const onClick = useCallback(() => {
-    mutation.mutate();
-  }, [ mutation ]);
+    navigate(`/`);
+  }, [ navigate ]);
   
   return (
     <div className={ "my-border rounded-md" } >

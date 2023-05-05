@@ -1,5 +1,5 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { CreateChat, DeleteChat, GetChatMessages, GetChats, RenameChat } from "../../services/chat/api.ts";
+import { DeleteChat, GetChatMessages, GetChats, RenameChat } from "../../services/chat/api.ts";
 import { ChatId, ChatInfo, MessageInfo } from "../../services/chat/models.ts";
 import { RenameChatReqDto } from "../../services/chat/requestModels.ts";
 import { RootState } from "../index.ts";
@@ -24,11 +24,6 @@ const initialState: ChatState = {
 
 export const fetchChats = createAsyncThunk("chat/fetchChats", async () => {
   const response = await GetChats();
-  return response.data;
-});
-
-export const createNewChat = createAsyncThunk("chat/createNewChat", async () => {
-  const response = await CreateChat();
   return response.data;
 });
 
@@ -63,9 +58,6 @@ const chatSlice = createSlice({
       .addCase(fetchChats.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch chats";
-      })
-      .addCase(createNewChat.fulfilled, (state, action) => {
-        chatsAdapter.addOne(state.chats, action.payload as ChatInfo);
       })
       .addCase(updateChatName.fulfilled, (state, action) => {
         chatsAdapter.updateOne(state.chats, {

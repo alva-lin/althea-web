@@ -9,11 +9,18 @@ export async function GetChats() {
   });
 }
 
-// 新建聊天 POST /Chat/create
-export async function CreateChat() {
+export async function GetChat(data: { id: ChatId }) {
   return axios.request<ChatInfo>({
+    method: "GET",
+    url: `/Chat/${ data.id }`,
+  });
+}
+
+// 生成聊天名称 POST /Chat/GenerateTitle
+export async function GenerateTitle(data: { id: ChatId }) {
+  return axios.request<string>({
     method: "POST",
-    url: `/Chat/create`,
+    url: `/Chat/${ data.id }/gen-title`,
   });
 }
 

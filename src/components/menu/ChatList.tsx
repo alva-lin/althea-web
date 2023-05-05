@@ -5,7 +5,7 @@ import ChatItem from "./ChatItem.tsx";
 import MenuItem from "./MenuItem.tsx";
 
 const ChatList = () => {
-  const { data: chats, isLoading, isError, refetch } = useQuery([ "chats" ], GetChats, {
+  const { data: chats, isLoading, isError, refetch } = useQuery([ "chats", "getList" ], GetChats, {
     select: (resp) => resp.data,
   });
   
