@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GetChat } from "../services/chat/api.ts";
 import { ChatId } from "../services/chat/models.ts";
 import { useCallback } from "react";
@@ -10,6 +10,7 @@ const Chat = () => {
   const { isSetToken } = useLogin();
 
   const params = useParams();
+  const navigate = useNavigate();
   const chatId = Number(params["id"]) as ChatId;
   const {
     data: chat,
@@ -23,6 +24,11 @@ const Chat = () => {
     {
       select: (resp) => resp.data,
       enabled: isSetToken && !!chatId,
+      retry: false,
+      onError: (error: Error) => {
+        console.error(error.message);
+        navigate("/");
+      }
     }
   );
 

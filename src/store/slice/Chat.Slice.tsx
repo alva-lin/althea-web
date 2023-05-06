@@ -62,7 +62,7 @@ const chatSlice = createSlice({
       .addCase(updateChatName.fulfilled, (state, action) => {
         chatsAdapter.updateOne(state.chats, {
           id: action.payload.id,
-          changes: { name: action.payload.name }
+          changes: { name: action.payload.title }
         });
       })
       .addCase(removeChat.fulfilled, (state, action) => {

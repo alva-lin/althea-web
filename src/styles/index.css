@@ -15,7 +15,7 @@
 }
 
 .my-menu-item {
-  @apply w-full h-11 px-4 py-1.5
+  @apply w-full h-11 pl-4 pr-1
   flex flex-row justify-start
   rounded-md
   leading-8
@@ -34,7 +34,7 @@
 }
 
 .my-menu-item .chat-name {
-  @apply flex-1 relative overflow-hidden whitespace-nowrap;
+  @apply flex-1 flex flex-col justify-center relative overflow-hidden whitespace-nowrap;
 }
 
 .my-menu-item .chat-name .gradient-mask {
@@ -48,6 +48,10 @@
 .my-menu-item:active .chat-name .gradient-mask,
 .my-menu-item.active .chat-name .gradient-mask {
   @apply from-gray-300;
+}
+
+.chat-name-tool {
+  @apply flex-none flex flex-row items-center;
 }
 
 .my-message-send-area {

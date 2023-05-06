@@ -3,7 +3,7 @@ import { ChatId, MessageId, MessageInfo } from "./models.ts";
 
 export type RenameChatReqDto = {
   id: ChatId;
-  name: string;
+  title: string;
 };
 
 export type SendMessageReqDto = {

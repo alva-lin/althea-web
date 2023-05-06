@@ -10,6 +10,7 @@ import App from "./App.tsx";
 import AppEnv from "./common/env.ts";
 import { store } from "./store";
 import "./styles/index.css";
+import { Response } from "./services/index.ts";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
@@ -37,7 +38,11 @@ const logtoConfig: LogtoConfig = {
 
 axios.defaults.baseURL = AppEnv.Server.BaseUrl + AppEnv.Server.ApiPath;
 axios.interceptors.response.use((response) => {
-  return response.data;
+  const data = response.data as Response<unknown>;
+  if (data.code !== 0) {
+    throw new Error(data.message);
+  }
+  return data;
 });
 
 const queryClient = new QueryClient({
