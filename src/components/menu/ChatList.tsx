@@ -11,6 +11,7 @@ const ChatList = () => {
   const { data: chats, isLoading, isError, refetch } = useQuery([ "chats", "getList" ], GetChats, {
     select: (resp) => resp.data,
     enabled: isSetToken,
+    retry: false
   });
 
   if (isLoading || isError) {
@@ -18,7 +19,8 @@ const ChatList = () => {
       <MenuItem icon={ <RefreshOutlined /> }
                 loading={ isLoading }
                 onClick={ () => { refetch().then(); } } >
-        { isError ? "获取失败，请重试" : "加载中" }
+        { isLoading ? "加载中" :
+          isError ? "获取失败，请重试" : "重新加载" }
       </MenuItem >
     );
   }
