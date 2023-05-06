@@ -4,11 +4,11 @@ import { GetChat } from "../services/chat/api.ts";
 import { ChatId } from "../services/chat/models.ts";
 import { useCallback } from "react";
 import SendArea from "../components/chat/SendArea.tsx";
-import { useLogto } from "@logto/react";
+import { useLogin } from "../hooks/index.ts";
 
 const Chat = () => {
-  const { isSetToken } = useLogto();
-  
+  const { isSetToken } = useLogin();
+
   const params = useParams();
   const chatId = Number(params["id"]) as ChatId;
   const {
@@ -22,7 +22,7 @@ const Chat = () => {
     },
     {
       select: (resp) => resp.data,
-      enabled: !!isSetToken && !!chatId,
+      enabled: isSetToken && !!chatId,
     }
   );
 
