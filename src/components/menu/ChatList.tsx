@@ -3,10 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { GetChats } from "../../services/chat/api.ts";
 import ChatItem from "./ChatItem.tsx";
 import MenuItem from "./MenuItem.tsx";
+import { useLogin } from "../../hooks";
 
 const ChatList = () => {
+  const { isSetToken } = useLogin();
+
   const { data: chats, isLoading, isError, refetch } = useQuery([ "chats", "getList" ], GetChats, {
     select: (resp) => resp.data,
+    enabled: isSetToken,
   });
   
   if (isLoading || isError) {

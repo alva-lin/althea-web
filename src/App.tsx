@@ -1,13 +1,12 @@
-import { useLogto } from "@logto/react";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppEnv from "./common/env.ts";
 import Router from "./routes";
-
+import { useLogin } from './hooks';
 
 const App = () => {
-  const { isAuthenticated, getAccessToken } = useLogto();
+  const { isAuthenticated, getAccessToken, setIsSetToken } = useLogin();
   const tokenInterceptor = useRef<number | undefined>(undefined);
   
   useEffect(() => {
@@ -26,11 +25,12 @@ const App = () => {
           return config;
         });
         console.debug("add tokenInterceptor", tokenInterceptor.current);
+        setIsSetToken(true);
       }
     }
     
     initTokenInterceptor().then();
-  }, [ isAuthenticated, getAccessToken, tokenInterceptor ]);
+  }, [ isAuthenticated, getAccessToken, setIsSetToken, tokenInterceptor ]);
   
   return (
     <>

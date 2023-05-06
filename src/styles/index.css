@@ -24,6 +24,9 @@
   active:bg-gray-300
   ;
 }
+.my-menu-item.active {
+  @apply bg-gray-300;
+}
 
 /* LoadingButton 的图标位置不对 */
 .my-menu-item > .MuiLoadingButton-loadingIndicator {
@@ -42,7 +45,8 @@
   @apply from-gray-200;
 }
 
-.my-menu-item:active .chat-name div:last-child {
+.my-menu-item:active .chat-name div:last-child,
+.my-menu-item.active .chat-name div:last-child {
   @apply from-gray-300;
 }
 
