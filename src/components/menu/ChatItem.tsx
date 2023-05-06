@@ -14,19 +14,19 @@ const ChatItem = ({ chatInfo }: ChatItemProps) => {
   useEffect(() => {
     setIsActive(chatId === chatInfo.id);
   }, [chatId, chatInfo.id])
-  
+
   const navigate = useNavigate();
   const onClick = useCallback(() => {
     navigate(`/chat/${ chatInfo.id }`);
   }, [ chatInfo, navigate ]);
-  
+
   return (<div className={ "my-menu-item my-no-select gap-2" + (isActive ? ' active' : '') } onClick={ onClick } >
     <div className={ "flex-none flex flex-col justify-center" } >
       <ChatBubbleOutlineOutlined sx={ { "fontSize": 20 } } />
     </div >
     <div className="chat-name" >
       { chatInfo.name }
-      <div ></div >
+      <div className="gradient-mask"></div >
     </div >
   </div >);
 };

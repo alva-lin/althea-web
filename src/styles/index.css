@@ -37,16 +37,16 @@
   @apply flex-1 relative overflow-hidden whitespace-nowrap;
 }
 
-.my-menu-item .chat-name div:last-child {
+.my-menu-item .chat-name .gradient-mask {
   @apply absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l from-gray-100;
 }
 
-.my-menu-item:hover .chat-name div:last-child {
+.my-menu-item:hover .chat-name .gradient-mask {
   @apply from-gray-200;
 }
 
-.my-menu-item:active .chat-name div:last-child,
-.my-menu-item.active .chat-name div:last-child {
+.my-menu-item:active .chat-name .gradient-mask,
+.my-menu-item.active .chat-name .gradient-mask {
   @apply from-gray-300;
 }
 
