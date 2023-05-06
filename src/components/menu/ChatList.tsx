@@ -12,7 +12,7 @@ const ChatList = () => {
     select: (resp) => resp.data,
     enabled: isSetToken,
   });
-  
+
   if (isLoading || isError) {
     return (
       <MenuItem icon={ <RefreshOutlined /> }
@@ -22,7 +22,7 @@ const ChatList = () => {
       </MenuItem >
     );
   }
-  
+
   return (
     <div className={ "w-full h-full flex flex-col gap-1" } >
       { chats.map((chat) => (
