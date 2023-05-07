@@ -21,13 +21,13 @@ export type ChatInfo = {
   // 最后一次发送消息的时间
   lastSendTime?: Date;
   // 聊天内容
-  messageIds: MessageId[];
+  messages: MessageInfo[];
 };
 
 // 消息信息
 export type MessageInfo = {
   id: MessageId;
-  chatId: ChatId;
+  chatId?: ChatId;
   prevMessageId?: MessageId;
   nextMessageIds: MessageId[];
   isRoot: boolean;

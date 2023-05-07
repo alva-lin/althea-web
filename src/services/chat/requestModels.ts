@@ -7,9 +7,10 @@ export type RenameChatReqDto = {
 };
 
 export type SendMessageReqDto = {
-  chatId: ChatId;
-  lastMessageId: MessageId;
-  sent: string;
+  chatId?: ChatId;
+  prevMessageId?: MessageId;
+  message: string;
+  model?: string;
 };
 
 export type SendMessageRespDto = {
