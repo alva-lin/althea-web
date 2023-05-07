@@ -8,23 +8,27 @@ const useLogin = () => {
   const { signIn, signOut, isAuthenticated, getAccessToken } = useLogto();
   const { isSetToken } = useAppSelector(selectAuthInfo);
   const dispatch = useAppDispatch();
-
+  
   const login = useCallback(async () => {
     return signIn(AppEnv.Logto.LoginRedirectUrl);
   }, [ signIn ]);
-
+  
   const logout = useCallback(async () => {
     return signOut(AppEnv.Logto.LogoutRedirectUrl);
   }, [ signOut ]);
-
+  
   const updateIsSetToken = useCallback((isSetToken: boolean) => {
     dispatch(setIsSetToken(isSetToken));
-    }, [ dispatch ]);
-
+  }, [ dispatch ]);
+  
+  const getToken = useCallback(async () => {
+    return await getAccessToken(AppEnv.Logto.Resources[0]) || "";
+  }, [ getAccessToken ]);
+  
   return {
     login,
     logout,
-    getAccessToken,
+    getAccessToken: getToken,
     isAuthenticated,
     isSetToken,
     setIsSetToken: updateIsSetToken,
