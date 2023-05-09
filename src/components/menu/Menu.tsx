@@ -6,7 +6,7 @@ import LogtoMenuItem from "./LogtoMenuItem.tsx";
 
 const Menu = () => {
   return (
-    <div className={ "h-full w-full flex flex-col gap-4 px-2 py-2 bg-gray-100" } >
+    <div className={ "h-full w-full flex flex-col gap-4 px-2 py-2 bg-gray-100 border-0 border-r border-black/10 border-solid" } >
       <div className={ "hidden2" } >
         <Logo />
       </div >

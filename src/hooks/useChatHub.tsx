@@ -5,6 +5,8 @@ import { GenerateTitle, GetChatMessages } from "../services/chat/api.ts";
 import { ChatHub } from "../services/chat/chatHub.ts";
 import { ChatId, MessageInfo, MessageType } from "../services/chat/models.ts";
 import { useLogin } from "./index.ts";
+import { setActiveChat } from "../store/slice/Chat.Slice.tsx";
+import { useAppDispatch } from "../store/hooks.ts";
 
 export interface useChatHubProps {
   chatId?: ChatId;
@@ -12,19 +14,20 @@ export interface useChatHubProps {
 
 const useChatHub = (props?: useChatHubProps) => {
   const { isSetToken, getAccessToken } = useLogin();
-  
+  const dispatch = useAppDispatch();
+
   const [ chatHub ] = useState<ChatHub>(() => {
     return new ChatHub(getAccessToken);
   });
   const [ chatId, setChatId ] = useState(props?.chatId);
   const [ messages, setMessages ] = useState<MessageInfo[]>([]);
-  
+
   const [ isLoading, setIsLoading ] = useState(false);
   const [ isError, setIsError ] = useState(false);
   const [ error, setError ] = useState<Error>();
-  
+
   const queryClient = useQueryClient();
-  useQuery(
+  const { refetch } = useQuery(
     [ "chats", "getMessages", chatId ],
     async () => {
       setIsLoading(true);
@@ -36,6 +39,9 @@ const useChatHub = (props?: useChatHubProps) => {
       enabled: isSetToken && !!chatId,
       retry: false,
       onSuccess: (messages: MessageInfo[]) => {
+        if (messages.length === 0) {
+          return;
+        }
         setMessages(messages);
       },
       onError: (error: Error) => {
@@ -46,7 +52,7 @@ const useChatHub = (props?: useChatHubProps) => {
       }
     }
   );
-  
+
   const onSend = useCallback((text: string) => {
     if (text === "") {
       return;
@@ -54,10 +60,10 @@ const useChatHub = (props?: useChatHubProps) => {
     if (isLoading) {
       return;
     }
-    
+
     setIsLoading(true);
     setIsError(false);
-    
+
     const prevMessage = messages[messages.length - 1];
     const sent: MessageInfo = {
       id: -1,
@@ -90,7 +96,7 @@ const useChatHub = (props?: useChatHubProps) => {
     });
     setMessages(newMessages);
     let receiveContent = "";
-    
+
     chatHub.sendMessage({
       chatId: chatId,
       prevMessageId: prevMessage?.id,
@@ -104,22 +110,23 @@ const useChatHub = (props?: useChatHubProps) => {
           received.id = -2;
           sent.nextMessageIds = [ received.id ];
           received.prevMessageId = sent.id;
-          
+
           receiveContent += received.content;
           received.content = receiveContent;
         }
-        
+
         setChatId(sent.chatId);
+        dispatch(setActiveChat({ id: sent.chatId }));
         setMessages(produce(newMessages, (draft) => {
           const index = draft.length - 3;
-          
+
           draft[index]?.nextMessageIds.pop();
           draft[index]?.nextMessageIds.push(sent.id);
-          
+
           draft[index + 1] = sent;
           draft[index + 2] = received;
         }));
-        
+
         if (resp.isEnd && newMessages.length == 2) {
           GenerateTitle({ id: sent.chatId! }).then(() => {
             queryClient.invalidateQueries([ "chats", "getOne", sent.chatId! ]).then();
@@ -130,23 +137,33 @@ const useChatHub = (props?: useChatHubProps) => {
       error: (error) => {
         setError(error as Error);
         setIsError(true);
-        
+
         console.error(error);
       },
       complete: () => {
         setIsLoading(false);
       }
     }).then();
-  }, [ chatId, isLoading, messages, queryClient ]);
-  
+  }, [chatHub, chatId, dispatch, isLoading, messages, queryClient]);
+
+  const refetchMessages = useCallback((chatId?: ChatId) => {
+    if (chatId) {
+      setChatId(chatId);
+    } else {
+      refetch();
+    }
+  }, [setChatId, refetch]);
+
   return {
     chatHub,
     onSend,
     messages,
-    
+
     isLoading,
     isError,
     error,
+
+    refetch: refetchMessages
   };
 };
 
