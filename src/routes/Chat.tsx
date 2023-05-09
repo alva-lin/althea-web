@@ -4,38 +4,54 @@ import SendArea from "../components/chat/SendArea.tsx";
 import useChatHub from "../hooks/useChatHub.tsx";
 import { GetChat } from "../services/chat/api.ts";
 import { ChatId } from "../services/chat/models.ts";
+import MessageItem from "../components/chat/MessageItem.tsx";
+import { useAppDispatch } from "../store/hooks.ts";
+import { useEffect } from "react";
+import { setActiveChat } from "../store/slice/Chat.Slice.tsx";
 
 const Chat = () => {
   const params = useParams();
   const navigate = useNavigate();
   const chatId = Number(params["id"]) as ChatId;
-  
-  useQuery([ "chats", "getOne", chatId ], async () => {
-    return await GetChat({ id: chatId! });
-  }, {
-    select: (resp) => resp.data,
-    enabled: !!chatId,
-    onError: () => {
-      navigate("/");
+
+  const dispatch = useAppDispatch();
+
+  // const queryClient = useQueryClient();
+  useQuery(
+    ["chats", "getOne", chatId],
+    async () => {
+      return await GetChat({ id: chatId! });
+    },
+    {
+      select: (resp) => resp.data,
+      enabled: !!chatId,
+      onError: () => {
+        navigate("/");
+      },
+      onSettled: () => {
+        refetch(chatId);
+      }
     }
-  });
-  
-  const { onSend, messages, isLoading } = useChatHub({ chatId });
-  
+  );
+
+  useEffect(() => {
+    if (chatId) {
+      dispatch(setActiveChat({ id: chatId }));
+    }
+  }, [chatId, dispatch]);
+
+
+  const { onSend, messages, isLoading, refetch } = useChatHub({ chatId });
+
   return (
     <>
-      <div className={ "w-full h-full flex flex-col justify-start overflow-y-auto" }>
-        { messages.map((message) => (
-          <div key={ message?.id } className={ "flex flex-row" }>
-            <div className={ "flex-none w-1/12" }></div>
-            <div className={ "flex-none w-11/12" }>{
-              message.content
-            }</div>
-          </div>
-        )) }
-        <div className={ "flex-none h-48" }></div>
+      <div className={"w-full h-full flex flex-col items-center overflow-y-auto"}>
+        {messages.map((message, index) => (
+          <MessageItem key={message.id} message={message} index={index} />
+        ))}
+        <div className={"flex-none h-48 w-full"}></div>
       </div>
-      <SendArea onSend={ onSend } disabled={ isLoading } />
+      <SendArea onSend={onSend} disabled={isLoading} />
     </>
   );
 };
