@@ -1,18 +1,12 @@
-import MessageItem from "../components/chat/MessageItem.tsx";
-import SendArea from "../components/chat/SendArea.tsx";
-import useChatHub from "../hooks/useChatHub.tsx";
+import MessageArea from "../components/chat/MessageArea.tsx";
+import { useAppSelector } from "../store/hooks.ts";
+import { selectChatInfo } from "../store/slice/Chat.Slice.tsx";
 
 const Welcome = () => {
-  const { onSend, messages, isLoading } = useChatHub();
+  const chatId = useAppSelector(selectChatInfo).activeChatId;
 
   return (<>
-    <div className={ "w-full h-full flex flex-col justify-start overflow-y-auto" }>
-        {messages.map((message, index) => (
-          <MessageItem key={message.id} message={message} index={index} />
-        ))}
-      <div className={ "flex-none h-48" }></div>
-    </div>
-    <SendArea onSend={ onSend } disabled={ isLoading } />
+    <MessageArea chatId={chatId} />
   </>);
 };
 

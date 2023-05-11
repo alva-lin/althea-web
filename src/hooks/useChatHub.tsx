@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { produce } from "immer";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GenerateTitle, GetChatMessages } from "../services/chat/api.ts";
 import { ChatHub } from "../services/chat/chatHub.ts";
 import { ChatId, MessageInfo, MessageType } from "../services/chat/models.ts";
@@ -30,6 +30,9 @@ const useChatHub = (props?: useChatHubProps) => {
   const { refetch } = useQuery(
     [ "chats", "getMessages", chatId ],
     async () => {
+      if (chatId === undefined || !isSetToken) {
+        return {data: []};
+      }
       setIsLoading(true);
       setIsError(false);
       return await GetChatMessages({ id: chatId! });
@@ -39,13 +42,11 @@ const useChatHub = (props?: useChatHubProps) => {
       enabled: isSetToken && !!chatId,
       retry: false,
       onSuccess: (messages: MessageInfo[]) => {
-        if (messages.length === 0) {
-          return;
-        }
         setMessages(messages);
       },
       onError: (error: Error) => {
         setError(error);
+        setIsError(true);
       },
       onSettled: () => {
         setIsLoading(false);
@@ -114,9 +115,6 @@ const useChatHub = (props?: useChatHubProps) => {
           receiveContent += received.content;
           received.content = receiveContent;
         }
-
-        setChatId(sent.chatId);
-        dispatch(setActiveChat({ id: sent.chatId }));
         setMessages(produce(newMessages, (draft) => {
           const index = draft.length - 3;
 
@@ -127,9 +125,13 @@ const useChatHub = (props?: useChatHubProps) => {
           draft[index + 2] = received;
         }));
 
+        if (resp.isEnd) {
+          // setChatId(sent.chatId);
+          dispatch(setActiveChat({ id: sent.chatId }));
+        }
         if (resp.isEnd && newMessages.length == 2) {
           GenerateTitle({ id: sent.chatId! }).then(() => {
-            queryClient.invalidateQueries([ "chats", "getOne", sent.chatId! ]).then();
+            // queryClient.invalidateQueries([ "chats", "getOne", sent.chatId! ]).then();
             queryClient.invalidateQueries([ "chats", "getList" ]).then();
           });
         }
@@ -147,12 +149,17 @@ const useChatHub = (props?: useChatHubProps) => {
   }, [chatHub, chatId, dispatch, isLoading, messages, queryClient]);
 
   const refetchMessages = useCallback((chatId?: ChatId) => {
-    if (chatId) {
-      setChatId(chatId);
-    } else {
-      refetch();
-    }
-  }, [setChatId, refetch]);
+    setChatId(chatId);
+  }, [setChatId]);
+
+  const restore = useCallback(()=> {
+    setChatId(undefined);
+    setMessages([]);
+  }, []);
+
+  useEffect(() => {
+    refetch();
+  }, [chatId, refetch]);
 
   return {
     chatHub,
@@ -163,7 +170,8 @@ const useChatHub = (props?: useChatHubProps) => {
     isError,
     error,
 
-    refetch: refetchMessages
+    refetch: refetchMessages,
+    restore
   };
 };
 
