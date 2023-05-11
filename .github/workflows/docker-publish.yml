@@ -85,11 +85,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secrets: |
-            VITE_LOGTO_APPID: ${{ secrets.VITE_LOGTO_APPID }}
-            VITE_LOGTO_ENDPOINT: ${{ secrets.VITE_LOGTO_ENDPOINT }}
-            VITE_LOGTO_RESOURCES: ${{ secrets.VITE_LOGTO_RESOURCES }}
-            VITE_APP_URL: ${{ env.VITE_APP_URL }}
-            VITE_SERVER_API_PATH: ${{ env.VITE_SERVER_API_PATH }}
+            "VITE_LOGTO_APPID: ${{ secrets.VITE_LOGTO_APPID }}"
+            "VITE_LOGTO_ENDPOINT: ${{ secrets.VITE_LOGTO_ENDPOINT }}"
+            "VITE_LOGTO_RESOURCES: ${{ secrets.VITE_LOGTO_RESOURCES }}"
+            "VITE_APP_URL: ${{ env.VITE_APP_URL }}"
+            "VITE_SERVER_API_PATH: ${{ env.VITE_SERVER_API_PATH }}"
 
 
       # Sign the resulting Docker image digest except on PRs.
