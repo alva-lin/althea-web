@@ -8,8 +8,7 @@ WORKDIR /app
 COPY . .
 RUN yarn install --frozen-lockfile
 
-RUN
-    --mount=type=secret,id=VITE_APP_URL \
+RUN --mount=type=secret,id=VITE_APP_URL \
     --mount=type=secret,id=VITE_SERVER_BASE_URL \
     --mount=type=secret,id=VITE_LOGTO_ENDPOINT \
     --mount=type=secret,id=VITE_LOGTO_APPID \
