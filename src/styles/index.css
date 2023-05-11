@@ -42,3 +42,9 @@
 .my-menu-item.active .gradient-mask {
   @apply from-gray-300;
 }
+
+.markdown pre {
+  @apply p-4 rounded-md
+  border-solid border border-black
+  ;
+}
