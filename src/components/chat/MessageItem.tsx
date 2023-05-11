@@ -1,5 +1,6 @@
 import { MonitorOutlined, PersonOutlined } from "@mui/icons-material";
 import { MessageInfo, MessageType } from "../../services/chat/models";
+import Markdown from "./Markdown";
 
 export interface MessageItemProp {
   message: MessageInfo;
@@ -34,7 +35,7 @@ const MessageItem = ({ message, index }: MessageItemProp) => {
           <div className="flex-grow flex flex-col gap-3">
             <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap break-words">
               <div className="markdown w-full break-words">
-                {message.content}
+                <Markdown content={message.content} />
               </div>
             </div>
           </div>
