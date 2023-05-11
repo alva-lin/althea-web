@@ -11,9 +11,7 @@ const AddChatMenuItem = () => {
   const navigate = useNavigate();
   const onClick = useCallback(() => {
     dispatch(setActiveChat({ id: undefined }));
-    if (location.pathname === '/') {
-      window.location.reload();
-    } else {
+    if (location.pathname !== '/') {
       navigate(`/`);
     }
   }, [ navigate, location, dispatch ]);
