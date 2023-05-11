@@ -1,6 +1,9 @@
 # 使用一个基础的 Node.js 镜像作为起点
 FROM node:16-alpine
 
+# 暴露应用运行的端口（如果有需要）
+EXPOSE 3000
+
 # 设置工作目录
 WORKDIR /app
 
@@ -15,9 +18,6 @@ COPY . .
 
 # 构建 React + Vite 应用
 RUN yarn build
-
-# 暴露应用运行的端口（如果有需要）
-EXPOSE 3000
 
 # 运行应用
 CMD ["yarn", "serve"]
