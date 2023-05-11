@@ -9,7 +9,6 @@ type AppEnv = {
     BaseUrl: string,
     ApiPath: string,
     SignalRPath: string,
-    TokenPath: string,
   }
   Logto: {
     Endpoint: string,
@@ -32,7 +31,6 @@ const AppEnv: AppEnv = {
     BaseUrl: env.VITE_SERVER_BASE_URL || "",
     ApiPath: env.VITE_SERVER_API_PATH || "",
     SignalRPath: env.VITE_SERVER_SIGNALR_PATH || "",
-    TokenPath: env.VITE_SERVER_TOKEN_PATH || "",
   },
   Logto: {
     Endpoint: env.VITE_LOGTO_ENDPOINT || "",

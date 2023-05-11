@@ -1,0 +1,10 @@
+# 排除的文件和目录
+node_modules
+build
+dist
+.cache
+.git
+
+.devcontainer
+.vscode
+*.local
