@@ -22,7 +22,7 @@ const Markdown = ({ content }: MarkdownProps) => {
     setHtml(marked(content));
   }, [content]);
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className="markdown w-full" dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
 export default Markdown;

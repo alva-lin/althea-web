@@ -8,8 +8,12 @@ export interface MessageItemProp {
 }
 
 const MessageItem = ({ message, index }: MessageItemProp) => {
-
-  const avatar = message.type === MessageType.User ? <PersonOutlined /> :  <MonitorOutlined />;
+  const avatar =
+    message.type === MessageType.User ? (
+      <PersonOutlined />
+    ) : (
+      <MonitorOutlined />
+    );
 
   return (
     <div
@@ -18,12 +22,14 @@ const MessageItem = ({ message, index }: MessageItemProp) => {
         (index % 2 ? " bg-gray-100 " : "")
       }
     >
-      <div className={"flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl md:py-6 lg:px-0 m-auto"}>
+      <div
+        className={
+          "flex p-4 gap-4 text-base md:gap-6 md:max-w-2xl lg:max-w-xl xl:max-w-3xl md:py-6 lg:px-0 m-auto"
+        }
+      >
         <div className="flex-shrink-0 flex flex-col relative items-end">
           <div className="w-[30px]">
-            <div className="relative flex">
-                {avatar}
-            </div>
+            <div className="relative flex">{avatar}</div>
           </div>
           <div className="text-xs flex items-center justify-center gap-1 absolute left-0 top-2 -ml-4 -translate-x-full group-hover:visible hidden">
             <div>left button</div>
@@ -34,9 +40,7 @@ const MessageItem = ({ message, index }: MessageItemProp) => {
         <div className="relative flex flex-col w-[calc(100%-50px)] lg:w-[calc(100%-115px)] gap-1 md:gap-3">
           <div className="flex-grow flex flex-col gap-3">
             <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap break-words">
-              <div className="markdown w-full break-words">
-                <Markdown content={message.content} />
-              </div>
+              <Markdown content={message.content} />
             </div>
           </div>
           <div className="flex justify-between lg:block">
