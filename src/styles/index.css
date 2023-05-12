@@ -48,3 +48,7 @@
   border-solid border border-black
   ;
 }
+
+.markdown p {
+  @apply m-0;
+}
