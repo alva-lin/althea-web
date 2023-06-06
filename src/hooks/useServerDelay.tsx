@@ -7,7 +7,12 @@ const useServerDelay = () => {
   
   const { data: _ } = useQuery([ "health/getDelay" ], async () => {
     const start = Date.now();
-    await getHealth();
+    try {
+      await getHealth();
+    } catch (e) {
+      setDelay(9999);
+      return {};
+    }
     const end = Date.now();
     setDelay(end - start);
     return {};
