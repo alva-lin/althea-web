@@ -22,7 +22,6 @@ env:
 
 jobs:
   build:
-    environment: Althea
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -84,13 +83,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          secrets: |
-            "VITE_LOGTO_APPID=${{ secrets.VITE_LOGTO_APPID }}"
-            "VITE_LOGTO_ENDPOINT=${{ secrets.VITE_LOGTO_ENDPOINT }}"
-            "VITE_LOGTO_RESOURCES=${{ secrets.VITE_LOGTO_RESOURCES }}"
-            "VITE_APP_URL=${{ secrets.VITE_APP_URL }}"
-            "VITE_SERVER_BASE_URL=${{ vars.VITE_SERVER_BASE_URL }}"
-
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
@@ -104,4 +96,3 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}
-
