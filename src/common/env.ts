@@ -2,6 +2,7 @@ type AppEnv = {
   App: {
     Name: string,
     Version: string,
+    Title: string,
     Description: string,
     Url: string,
   },
@@ -22,8 +23,9 @@ type AppEnv = {
 const env = import.meta.env;
 const AppEnv: AppEnv = {
   App: {
-    Name: env.VITE_APP_NAME || "",
+    Name: env.VITE_APP_NAME || "Althea",
     Version: env.VITE_APP_VERSION || "",
+    Title: env.VITE_APP_TITLE || env.VITE_APP_NAME || "Althea",
     Description: env.VITE_APP_DESCRIPTION || "",
     Url: env.VITE_APP_URL || "",
   },

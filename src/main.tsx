@@ -8,9 +8,9 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import App from "./App.tsx";
 import AppEnv from "./common/env.ts";
+import { Response } from "./services/index.ts";
 import { store } from "./store";
 import "./styles/index.css";
-import { Response } from "./services/index.ts";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
@@ -40,7 +40,7 @@ axios.defaults.baseURL = AppEnv.Server.BaseUrl + AppEnv.Server.ApiPath;
 
 axios.interceptors.response.use((response) => {
   const data = response.data as Response<unknown>;
-  if (data.code !== 0) {
+  if (data.code && data.code !== 0) {
     throw new Error(data.message);
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,18 +60,18 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-  <React.StrictMode >
-    <Provider store={ store } >
-      <QueryClientProvider client={ queryClient } >
-        <LogtoProvider config={ logtoConfig } >
-          <StyledEngineProvider injectFirst >
-            <ThemeProvider theme={ theme } >
+  <React.StrictMode>
+    <Provider store={ store }>
+      <QueryClientProvider client={ queryClient }>
+        <LogtoProvider config={ logtoConfig }>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={ theme }>
               <CssBaseline enableColorScheme />
               <App />
-            </ThemeProvider >
-          </StyledEngineProvider >
-        </LogtoProvider >
-      </QueryClientProvider >
-    </Provider >
-  </React.StrictMode >
+            </ThemeProvider>
+          </StyledEngineProvider>
+        </LogtoProvider>
+      </QueryClientProvider>
+    </Provider>
+  </React.StrictMode>
 );
