@@ -18,9 +18,10 @@ const ChatList = () => {
   });
   
   const activeChatId = useAppSelector(selectChatInfo).activeChatId;
+  const title = chats?.find((chat) => chat.id === activeChatId)?.name ?? AppEnv.App.Title;
   useEffect(() => {
-    document.title = chats?.find((chat) => chat.id === activeChatId)?.name ?? AppEnv.App.Title;
-  }, [ chats ]);
+    document.title = title;
+  }, [ title ]);
   
   if (isLoading || isError) {
     return (
