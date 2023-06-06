@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
+import AppEnv from "./common/env.ts";
 import { useLogin } from "./hooks";
 import Router from "./routes";
 
 const App = () => {
   const { isAuthenticated, getAccessToken, isSetToken, setIsSetToken } = useLogin();
   const [ tokenInterceptor, setTokenInterceptor ] = useState<number | undefined>(undefined);
+  
+  useEffect(() => {
+    document.title = AppEnv.App.Title;
+  }, []);
   
   useEffect(() => {
     async function initTokenInterceptor() {
