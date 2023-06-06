@@ -6,8 +6,8 @@ import Router from "./routes";
 
 const App = () => {
   const { isAuthenticated, getAccessToken, isSetToken, setIsSetToken } = useLogin();
-  const [tokenInterceptor, setTokenInterceptor] = useState<number | undefined>(undefined);
-
+  const [ tokenInterceptor, setTokenInterceptor ] = useState<number | undefined>(undefined);
+  
   useEffect(() => {
     async function initTokenInterceptor() {
       if (isAuthenticated && !isSetToken) {
@@ -23,10 +23,10 @@ const App = () => {
         setIsSetToken(true);
       }
     }
-
+    
     initTokenInterceptor().then();
   }, [ isAuthenticated, getAccessToken, isSetToken, setIsSetToken, tokenInterceptor, setTokenInterceptor ]);
-
+  
   return (
     <>
       <BrowserRouter>
