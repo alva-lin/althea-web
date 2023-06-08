@@ -1,21 +1,8 @@
-import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer.tsx";
 import Menu from "../components/menu/Menu.tsx";
-import { useLogin } from "../hooks";
 
 const HomeComponent = () => {
-  const { isAuthenticated, login } = useLogin();
-  
-  useEffect(() => {
-    async function isLogin() {
-      if (!isAuthenticated) {
-        await login();
-      }
-    }
-    
-    isLogin().then();
-  }, [ isAuthenticated, login ]);
   
   return (
     <div className={ "flex w-screen h-screen" }>
