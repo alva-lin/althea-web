@@ -6,7 +6,7 @@ import { useLogin } from "./hooks";
 import Router from "./routes";
 
 const App = () => {
-  const { isAuthenticated, getAccessToken, isSetToken, setIsSetToken } = useLogin();
+  const { isAuthenticated, getAccessToken, isSetToken, setIsSetToken, login } = useLogin();
   const [ tokenInterceptor, setTokenInterceptor ] = useState<number | undefined>(undefined);
   
   useEffect(() => {
@@ -24,13 +24,26 @@ const App = () => {
           config.headers.Authorization = `Bearer ${ accessToken }`; // 将 token 附加到请求头中
           return config;
         });
+        axios.interceptors.response.use(async function (response) {
+          if (response.status === 401) {
+            await login();
+            return axios(response.config);
+          }
+          return response;
+        }, async function (error) {
+          if (error.response.status === 401) {
+            await login();
+            return axios(error.config);
+          }
+          return Promise.reject(error);
+        });
         setTokenInterceptor(interceptor);
         setIsSetToken(true);
       }
     }
     
     initTokenInterceptor().then();
-  }, [ isAuthenticated, getAccessToken, isSetToken, setIsSetToken, tokenInterceptor, setTokenInterceptor ]);
+  }, [ isAuthenticated, getAccessToken, isSetToken, setIsSetToken, tokenInterceptor, setTokenInterceptor, login ]);
   
   return (
     <>
