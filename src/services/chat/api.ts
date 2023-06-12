@@ -28,8 +28,7 @@ export async function GenerateTitle(data: { id: ChatId }) {
 export async function RenameChat(data: RenameChatReqDto) {
   return axios.request<never>({
     method: "POST",
-    url: `/Chat/${ data.id }/rename`,
-    data: data,
+    url: `/Chat/${ data.id }/rename?newTitle=${ data.title }`,
   });
 }
 

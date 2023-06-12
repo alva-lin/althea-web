@@ -1,4 +1,5 @@
-import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppEnv from "./common/env.ts";
@@ -9,9 +10,36 @@ const App = () => {
   const { isAuthenticated, getAccessToken, isSetToken, setIsSetToken, login } = useLogin();
   const [ tokenInterceptor, setTokenInterceptor ] = useState<number | undefined>(undefined);
   
+  const queryClient = useQueryClient();
+  
+  useEffect(() => {
+    queryClient.setDefaultOptions({
+      queries: {
+        onError: (error) => {
+          const axiosError = error as AxiosError;
+          if (axiosError.response?.status === 401 && !isAuthenticated) {
+            login();
+          }
+          throw error;
+        }
+      }
+    });
+  }, [ isAuthenticated, login, queryClient ]);
+  
   useEffect(() => {
     document.title = AppEnv.App.Title;
   }, []);
+  
+  useEffect(() => {
+    const time = setTimeout(() => {
+      if (!isAuthenticated) {
+        login();
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(time);
+    };
+  }, [ isAuthenticated, login ]);
   
   useEffect(() => {
     async function initTokenInterceptor() {
@@ -23,19 +51,6 @@ const App = () => {
           const accessToken = await getAccessToken();
           config.headers.Authorization = `Bearer ${ accessToken }`; // 将 token 附加到请求头中
           return config;
-        });
-        axios.interceptors.response.use(async function (response) {
-          if (response.status === 401) {
-            await login();
-            return axios(response.config);
-          }
-          return response;
-        }, async function (error) {
-          if (error.response.status === 401) {
-            await login();
-            return axios(error.config);
-          }
-          return Promise.reject(error);
         });
         setTokenInterceptor(interceptor);
         setIsSetToken(true);
