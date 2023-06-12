@@ -1,4 +1,4 @@
-import { useLogto } from "@logto/react";
+import { LogtoClientError, useLogto } from "@logto/react";
 import { useCallback } from "react";
 import AppEnv from "../common/env.ts";
 import { useAppDispatch, useAppSelector } from "../store/hooks.ts";
@@ -22,8 +22,19 @@ const useLogin = () => {
   }, [ dispatch ]);
   
   const getToken = useCallback(async () => {
-    return await getAccessToken(AppEnv.Logto.Resources[0]) || "";
-  }, [ getAccessToken ]);
+    let token = undefined;
+    try {
+      token = await getAccessToken(AppEnv.Logto.Resources[0]).catch((err) => {
+        console.log(err as LogtoClientError);
+        throw new Error("获取 token 失败");
+        // await login();
+      });
+    } catch (err) {
+      console.log(err as LogtoClientError);
+      // await login();
+    }
+    return token || "";
+  }, [ getAccessToken, login ]);
   
   return {
     login,
