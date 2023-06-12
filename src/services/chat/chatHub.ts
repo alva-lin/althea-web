@@ -11,18 +11,21 @@ export class ChatHub {
   
   disconnectTimeout: NodeJS.Timeout | null;
   
-  disconnectTimeoutTime = 90;
+  disconnectTimeoutTime = 180;
   
   url: string;
   
   getAccessToken: () => Promise<string>;
   
-  constructor(getAccessToken: () => Promise<string>) {
+  errorHandler?: (error: unknown) => void;
+  
+  constructor(getAccessToken: () => Promise<string>, errorHandler?: (error: unknown) => void) {
     this.connection = null;
     this.connecting = false;
     this.disconnectTimeout = null;
     this.url = AppEnv.Server.BaseUrl + AppEnv.Server.SignalRPath + "/chat";
     this.getAccessToken = getAccessToken;
+    this.errorHandler = errorHandler;
   }
   
   // 初始化并连接到 SignalR
@@ -33,7 +36,7 @@ export class ChatHub {
     this.connecting = true;
     this.connection = new HubConnectionBuilder()
       .withUrl(this.url, { accessTokenFactory: this.getAccessToken })
-      .configureLogging(LogLevel.Information)
+      .configureLogging(LogLevel.Error)
       .build();
     
     try {
@@ -41,6 +44,7 @@ export class ChatHub {
       console.log("SignalR connected.");
     } catch (err) {
       console.error("Failed to connect to SignalR:", err);
+      this.errorHandler && this.errorHandler(err);
       setTimeout(() => {
         this.initAndConnect();
       }, 5000);

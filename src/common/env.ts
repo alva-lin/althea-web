@@ -5,6 +5,7 @@ type AppEnv = {
     Title: string,
     Description: string,
     Url: string,
+    CheckHealth: boolean,
   },
   Server: {
     BaseUrl: string,
@@ -28,6 +29,7 @@ const AppEnv: AppEnv = {
     Title: env.VITE_APP_TITLE || env.VITE_APP_NAME || "Althea",
     Description: env.VITE_APP_DESCRIPTION || "",
     Url: env.VITE_APP_URL || "",
+    CheckHealth: env.VITE_APP_CHECK_HEALTH === "True" || env.VITE_APP_CHECK_HEALTH === "true" || false,
   },
   Server: {
     BaseUrl: env.VITE_SERVER_BASE_URL || "",
